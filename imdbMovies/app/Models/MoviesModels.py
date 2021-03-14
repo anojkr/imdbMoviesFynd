@@ -31,9 +31,8 @@ class Movies(Document):
 
     def __repr__(self):
         return (
-            "Movies table Id={} Popularity={} Director {} Imdb Score={} Name={} "
+            "Movies Popularity={} Director {} Imdb Score={} Name={} "
             "Genre Blob={}".format(
-                self.uuid,
                 self.popularity,
                 self.director,
                 self.imdbScore,

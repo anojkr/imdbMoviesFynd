@@ -36,7 +36,7 @@ class MoviesDAO(object):
             ).save()
 
             response = MovieCastDAO.addMovieCast(movieResponse.id, castResponse.id)
-            print(response)
+            
             # adding movies genere-list
             for movieGenre in genreList:
                 genreResponse = GenresDAO.addGenres(movieGenre)
@@ -48,3 +48,29 @@ class MoviesDAO(object):
     def getMovie(limit, offset):
         query = Movies.objects.filter().skip(offset).limit(limit)
         return query
+
+    @staticmethod
+    def getmoviesPopularity(popularity, offset, limit):
+        query = Movies.objects.filter(popularity__gte = popularity).skip(offset).limit(limit)
+        return query
+
+    @staticmethod
+    def getmoviesImdbScore(imdbScore, offset, limit):
+        query = Movies.objects.filter(imdbScore__gte = imdbScore).skip(offset).limit(limit)
+        return query
+
+    @staticmethod
+    def getSearchResult(popularity, movieName, director, genre, imdbScore, offset, limit):
+        popularityResponse = Movies.objects.filter(popularity__gte = popularity)#.skip(offset).limit(limit)
+        imdbscoreResponse = popularityResponse.filter(imdbScore__gte = imdbScore)
+
+        responseResult = imdbscoreResponse
+        if movieName!= None:
+            movieResponse = imdbscoreResponse.filter(movieName__icontains = movieName)
+            responseResult = movieResponse
+
+        if director!= None:
+            directorResponse = movieResponse.filter(director__icontains = director)
+            responseResult = directorResponse
+            
+        return responseResult

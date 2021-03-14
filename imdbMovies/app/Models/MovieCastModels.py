@@ -19,4 +19,4 @@ class MovieCast(Document):
     meta = {"collection": "MovieCast"}
 
     def __repr__(self):
-        return "Persons table Id={}, name={}".format(self.uuid, self.castName)
+        return "MovieCast name={}".format(self.castID)

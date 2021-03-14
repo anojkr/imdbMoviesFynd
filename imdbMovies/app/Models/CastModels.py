@@ -15,4 +15,4 @@ class Cast(Document):
     meta = {"collection": "Cast"}
 
     def __repr__(self):
-        return "Persons table Id={}, name={}".format(self.uuid, self.castName)
+        return "Persons name={}".format(self.castName)

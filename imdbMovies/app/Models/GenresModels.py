@@ -15,4 +15,4 @@ class Genres(Document):
     meta = {"collection": "Genres"}
 
     def __repr__(self):
-        return "Persons table Id={}, name={}".format(self.uuid, self.genresName)
+        return "Genres name={}".format(self.genresName)

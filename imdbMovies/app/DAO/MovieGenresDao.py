@@ -21,14 +21,14 @@ class MovieGenresDAO(object):
 			response = MovieGenre(movieID = movieID, genreID = genreID).save()
 			return response
 
-	@staticmethod
-	def getByGenre(genresName, offset, limit):
-		genreID = Movies.objects.get(movieName = genresName)
-		response = MovieGenre.objects.filter(genreID = genreID).skip(offset).limit(limit)
-		return response
+	# @staticmethod
+	# def getByGenre(genresName, offset, limit):
+	# 	genreID = Movies.objects.get(movieName = genresName)
+	# 	response = MovieGenre.objects.filter(genreID = genreID).skip(offset).limit(limit)
+	# 	return response
 
 	@staticmethod
 	def getByMovie(movieName, offset, limit):
-		movieID = Movies.objects.get(movieName = genresName)
+		movieID = Movies.objects.get(movieName = movieName)
 		response = MovieGenre.objects.filter(movieID = movieID).skip(offset).limit(limit)
 		return response
