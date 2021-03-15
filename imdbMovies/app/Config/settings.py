@@ -1,3 +1,5 @@
+LIMIT = 10
+
 # """
 # A file to store all the config related settings
 # """

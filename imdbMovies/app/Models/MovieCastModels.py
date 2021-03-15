@@ -12,12 +12,11 @@ from app.Models.MoviesModels import Movies
 
 class MovieCast(Document):
 
-    castID  = ReferenceField(Cast)
+    castID = ReferenceField(Cast)
     movieID = ReferenceField(Movies)
     role = StringField(default="Director")
     createdAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
     updatedAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
-    
 
     meta = {"collection": "MovieCast"}
 

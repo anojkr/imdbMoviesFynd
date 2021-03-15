@@ -20,6 +20,4 @@ class MovieGenre(Document):
     meta = {"collection": "MovieGenre"}
 
     def __repr__(self):
-        return "Movie Genre Movie ID={}, Genre ID={}".format(
-            self.movieID, self.genreID
-        )
+        return "Movie Genre Movie ID={}, Genre ID={}".format(self.movieID, self.genreID)

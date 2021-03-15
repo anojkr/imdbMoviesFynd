@@ -1,56 +1,35 @@
-
 class ValidationError(Exception):
     def __init__(self, message, error):
-        super().__init__(message)
-        self.error = error
-
-   	def __str__(self):
-		return self.message
-
-    def getMessage():
-      response = { "status" : "fail"git 
-                   , "message" : self.message
-                   , "error" : self.error
-              }
-
-class MethodNotAllowed(Exception):
-    def __init__(self, message, error):
-        super().__init__(message)
+        self.message = message
         self.error = error
 
     def __str__(self):
-    return self.message
+        return self.message
 
-    def getMessage():
-      response = { "status" : "fail"
-                   , "message" : self.message
-                   , "error" : self.error
-              }
+    def getMessage(self):
+        response = {"status": "fail", "message": self.message, "error": self.error}
+        return response
 
-class AuthorizationError(Exception):
+class InputOutOfBounds(Exception):
     def __init__(self, message, error):
-        super().__init__(message)
+        self.message = message
         self.error = error
 
     def __str__(self):
-    return self.message
+        return self.message
 
-    def getMessage():
-      response = { "status" : "fail"
-                   , "message" : self.message
-                   , "error" : self.error
-              }
+    def getMessage(self):
+        response = {"status": "fail", "message": self.message, "error": self.error}
+        return response
 
-class ParameterError(Exception):
+class DuplicateData(Exception):
     def __init__(self, message, error):
-        super().__init__(message)
+        self.message = message
         self.error = error
 
     def __str__(self):
-    return self.message
+        return self.message
 
-    def getMessage():
-      response = { "status" : "fail"git 
-                   , "message" : self.message
-                   , "error" : self.error
-              }
+    def getMessage(self):
+        response = {"status": "fail", "message": self.message, "error": self.error}
+        return response

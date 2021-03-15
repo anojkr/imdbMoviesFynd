@@ -4,23 +4,21 @@ This file contains API endpoints which would be exposed to the outer world
 import json
 from flask import Blueprint, request
 from flask import jsonify, make_response
-from app.Validations.Validatior import Validator
 
 from app.DAO.CastDao import CastDAO
 from app.DAO.GenresDao import GenresDAO
 from app.DAO.MovieCastDao import MovieCastDAO
 from app.DAO.MovieGenresDao import MovieGenresDAO
 from app.DAO.MoviesDao import MoviesDAO
+
 import uuid
-from mongoengine import *
+from app.DTO.MoviesSerializer import MoviesSerializer
+from app.Utils.DataParser import DataParser
 from mongoengine import connect
+from app.Config.settings import LIMIT
+from app.Exceptions import Exceptions
 
-LIMIT = 10
 blueprint = Blueprint("movies", __name__)
-
-
-class MissingFields(Exception):
-    pass
 
 
 @blueprint.route("/")
@@ -32,14 +30,29 @@ def homepageView():
     return "Welcome to IMDB API"
 
 
-@blueprint.route("/v1/movies", methods=["POST"])
+@blueprint.route("/v1/add/movies", methods=["POST"])
 def add_movies():
 
     if request.method == "POST":
-        try:
+        # try:
             data = request.json
-            popularity, director, genreList, imdbScore, movieName = Validator.parse_json(data)
-            movie = MoviesDAO.addMovies(
+            (
+                popularity,
+                director,
+                genreList,
+                imdbScore,
+                movieName,
+            ) = DataParser.validateRequestData(data)
+
+            try:
+                DataParser.validateParam(popularity, imdbScore)
+            except Exception as e:
+                response = Exceptions.ValidationError(
+                    "enter valid value", str(e)
+                ).getMessage()
+                return make_response(jsonify(response), 500)
+
+            movie, flag = MoviesDAO.addMovies(
                 popularity=popularity,
                 director=director,
                 imdbScore=imdbScore,
@@ -47,63 +60,44 @@ def add_movies():
                 genreList=genreList,
             )
 
-            d = {"status": "sucess"}
-            return make_response(jsonify(d), 200)
-        except Exception as e:
-            response = {"status": "fail"}
-            return make_response(response, 500)
+            if flag is True:
+                response = {"status": "sucess"}
+                return make_response(jsonify(response), 200)
+            else:
+                response = Exceptions.DuplicateData('NotUniqueError', 'duplicate data').getMessage()
+                return make_response(jsonify(response), 200)
 
 
-@blueprint.route("/v1/getmovies", methods=["GET"])
+@blueprint.route("/v1/get/movies", methods=["GET"])
 def get_movies():
 
     if request.method == "GET":
-        page = int(request.args.get('page', 0))
-        resp = MoviesDAO.getMovie(10, page)
-        movie_list = []
-        for movie in resp:
-            items = MovieGenresDAO.getByMovie(movie.movieName, page, 10)
-            movie_list.append({"movie": movie.movieName})
 
-        resp = {"total": 1, "data": movie_list}
+        page = int(request.args.get("page", 0))
+        queryResp = MoviesDAO.getMovieList(page, LIMIT)
+        response = MoviesSerializer(queryResp).getReponse()
+
+        resp = {"status": "sucess", "data": response}
         return make_response(jsonify(resp), 200)
 
 
-@blueprint.route("/v1/search/movies", methods=["GET"])
+@blueprint.route("/v1/get/search/movies", methods=["GET"])
 def search_movies():
 
     if request.method == "GET":
-        page = int(request.args.get('page', 0))
-        popularity = float(request.args.get('popularity', 0.0))
-        movieName = request.args.get('name', None)
-        director = request.args.get('director', None)
-        genre = request.args.get('genre', None)
-        imdbScore = request.args.get('imdbscore', 0)
 
-        movieSet = set()
-        # print('Popularity Result')
-        # print(popularity)
-        # popularityResponse = MoviesDAO.getmoviesPopularity(popularity, page, LIMIT)
-        # print(popularityResponse.count())
+        page = int(request.args.get("page", 0))
+        popularity = float(request.args.get("popularity", 0.0))
+        movieName = request.args.get("name", None)
+        director = request.args.get("director", None)
+        genre = request.args.get("genre", None)
+        imdbScore = request.args.get("imdbscore", 0)
 
-        # print('Imdnameb Score Result')
-        # print(imdbScore)
-        # imdbscoreResponse = MoviesDAO.getmoviesImdbScore(imdbScore, page, 10)
-        # print(imdbscoreResponse.count())
+        searchResult = MoviesDAO.getSearchResult(
+            popularity, movieName, director, genre, imdbScore, page, LIMIT
+        )
 
+        response = MoviesSerializer(searchResult).getReponse()
 
-        print('Search  Result')
-        # print(imdbScore)
-        imdbscoreResponse = MoviesDAO.getSearchResult(popularity, movieName, director, genre, imdbScore, page, 10)
-        # print(imdbscoreResponse)
-        for item in imdbscoreResponse:
-            print(item.popularity, item.imdbScore, item.movieName)
-        # resp = MoviesDAO.getMovie(10, page)
-        # movie_list = []
-        # for movie in resp:
-
-        #     items = MovieGenresDAO.getByMovie(movie.movieName, page, LIMIT)
-        #     movie_list.append({"movie": movie.movieName})
-
-        resp = {"total": 1, "data": 'movie_list'}
+        resp = {"status": "sucess", "data": response}
         return make_response(jsonify(resp), 200)

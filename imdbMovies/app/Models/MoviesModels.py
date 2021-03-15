@@ -8,12 +8,12 @@ from mongoengine import (
     ListField,
     FloatField,
     DateTimeField,
+
 )
 
 import uuid
 import datetime
 from app.Models.CastModels import Cast
-
 
 class Movies(Document):
 
@@ -30,7 +30,7 @@ class Movies(Document):
     def __repr__(self):
         return (
             "Movies Popularity={} Director {} Imdb Score={} Name={} "
-            "Genre Blob={}".format(
+            "Genre ={}".format(
                 self.popularity,
                 self.director,
                 self.imdbScore,

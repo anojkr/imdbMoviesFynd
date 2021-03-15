@@ -1,0 +1,23 @@
+from app.Exceptions import Exceptions
+
+class DataParser(object):
+    @staticmethod
+    def validateParam(popularity, imdb_score):
+        if popularity > 100 or popularity < 0:
+            raise Exceptions.InputOutOfBounds('index out of bound', 'enter valid value')
+
+        if imdb_score > 10 or imdb_score < 0:
+            raise Exceptions.InputOutOfBounds('index out of bound', 'enter valid value')
+
+    @staticmethod
+    def validateRequestData(jsonData):
+        popularity = float(jsonData.get("99popularity", 0))
+        director = jsonData.get("director", "").strip()
+        genre_list = jsonData.get("genre", [])
+        imdb_score = float(jsonData.get("imdb_score", 0))
+        name = jsonData.get("name", "").strip()
+
+        for index, value in enumerate(genre_list):
+            genre_list[index] = value.strip()
+
+        return popularity, director, genre_list, imdb_score, name
