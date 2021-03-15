@@ -34,7 +34,7 @@ def homepageView():
 def add_movies():
 
     if request.method == "POST":
-        # try:
+        try:
             data = request.json
             (
                 popularity,
@@ -44,13 +44,8 @@ def add_movies():
                 movieName,
             ) = DataParser.validateRequestData(data)
 
-            try:
-                DataParser.validateParam(popularity, imdbScore)
-            except Exception as e:
-                response = Exceptions.ValidationError(
-                    "enter valid value", str(e)
-                ).getMessage()
-                return make_response(jsonify(response), 500)
+            DataParser.validateParam(popularity, imdbScore)
+
 
             movie, flag = MoviesDAO.addMovies(
                 popularity=popularity,
@@ -60,12 +55,21 @@ def add_movies():
                 genreList=genreList,
             )
 
-            if flag is True:
-                response = {"status": "sucess"}
-                return make_response(jsonify(response), 200)
-            else:
-                response = Exceptions.DuplicateData('NotUniqueError', 'duplicate data').getMessage()
-                return make_response(jsonify(response), 200)
+            response = {"status": "sucess"}
+            return make_response(jsonify(response), 200)
+
+
+        except Exceptions.InputOutOfBounds:
+            response = {"status" : "fail", "error" : "index out of bound"}
+            return make_response(jsonify(response), 400)
+
+        except Exceptions.ParameterError:
+            response = {"status" : "fail", "error" : "parameter error"}
+            return make_response(jsonify(response), 400)
+
+        except Exception as e:
+            return make_response(jsonify(str(e)), 500)
+
 
 
 @blueprint.route("/v1/get/movies", methods=["GET"])

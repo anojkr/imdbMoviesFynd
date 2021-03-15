@@ -11,6 +11,16 @@ class DataParser(object):
 
     @staticmethod
     def validateRequestData(jsonData):
+        parameter =   {
+                "99popularity": True,
+                "director": True,
+                "genre": True,
+                "imdb_score": True,
+                "name": True
+              }
+        if parameter.keys() != jsonData.keys():
+            raise Exceptions.ParameterError
+
         popularity = float(jsonData.get("99popularity", 0))
         director = jsonData.get("director", "").strip()
         genre_list = jsonData.get("genre", [])
