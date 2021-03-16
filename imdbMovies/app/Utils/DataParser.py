@@ -1,5 +1,6 @@
 from app.Exceptions import Exceptions
 
+
 class DataParser(object):
     @staticmethod
     def validateParam(popularity, imdb_score):
@@ -11,13 +12,13 @@ class DataParser(object):
 
     @staticmethod
     def validateRequestData(jsonData):
-        parameter =   {
-                "99popularity": True,
-                "director": True,
-                "genre": True,
-                "imdb_score": True,
-                "name": True
-              }
+        parameter = {
+            "99popularity": True,
+            "director": True,
+            "genre": True,
+            "imdb_score": True,
+            "name": True,
+        }
         if parameter.keys() != jsonData.keys():
             raise Exceptions.ParameterError
 

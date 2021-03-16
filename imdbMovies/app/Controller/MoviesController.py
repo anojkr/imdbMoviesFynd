@@ -53,15 +53,24 @@ def add_movies():
                 genreList=genreList,
             )
 
-            response = {"status": "sucess"}
-            return make_response(jsonify(response), 200)
+            if flag is True:
+                response = {"status": "sucess"}
+                return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
+
+            elif flag is False:
+                response = {"status": "fail", "message" : "duplicate data"}
+                return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
         except Exceptions.InputOutOfBounds:
-            response = Exceptions.getReponseMessage("InputOutOfBounds", "input value not valid")
+            response = Exceptions.getReponseMessage(
+                "InputOutOfBounds", "input value not valid"
+            )
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exceptions.ParameterError:
-            response = Exceptions.getReponseMessage("ParameterError", "missing input parameter")
+            response = Exceptions.getReponseMessage(
+                "ParameterError", "missing input parameter"
+            )
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
@@ -81,7 +90,7 @@ def get_movies():
             response = MoviesSerializer(queryResp).getReponse()
             resp = {"status": "sucess", "data": response}
 
-            return make_response(jsonify(resp), 200)
+            return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
 
         except Exception as e:
             response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
@@ -93,13 +102,13 @@ def search_movies():
 
     if request.method == "GET":
 
-        try: 
-            page = int(request.args.get("page", 0))
+        try:
             popularity = float(request.args.get("popularity", 0.0))
             movieName = request.args.get("name", None)
             director = request.args.get("director", None)
             genre = request.args.get("genre", None)
             imdbScore = request.args.get("imdbscore", 0)
+            page = int(request.args.get("page", 0))
 
             searchResult = MoviesDAO.getSearchResult(
                 popularity, movieName, director, genre, imdbScore, page, LIMIT
@@ -108,8 +117,8 @@ def search_movies():
             response = MoviesSerializer(searchResult).getReponse()
 
             resp = {"status": "sucess", "data": response}
-            return make_response(jsonify(resp), 200)
-            
+            return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
+
         except Exception as e:
             response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)

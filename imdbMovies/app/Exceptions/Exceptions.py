@@ -1,20 +1,22 @@
-
-
 class InternalServerError(Exception):
     pass
+
 
 class DuplicateData(Exception):
     pass
 
+
 class ParameterError(Exception):
-	pass
+    pass
+
 
 class InputOutOfBounds(Exception):
-	pass
+    pass
+
 
 def getReponseMessage(error_type, message):
     resp = dict()
-    resp['status'] = "fail"
-    resp['message'] = message
-    resp['error_type'] =  error_type
+    resp["status"] = "fail"
+    resp["message"] = message
+    resp["error_type"] = error_type
     return resp
