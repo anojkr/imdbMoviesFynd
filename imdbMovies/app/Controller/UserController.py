@@ -16,6 +16,9 @@ import logging
 from app.Config.settings import Config
 from logging.config import dictConfig
 from  werkzeug.security import generate_password_hash, check_password_hash 
+from app.Exceptions import Exceptions
+from app.Utils.StatusCodes import StatusCodes
+
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -37,17 +40,32 @@ def homepageView():
 def signup_user(): 
 
 	data = request.json
+	try:
+		if "username" not in data.keys() or "password" not in data.keys():
+			raise Exceptions.ParameterError
 
-	if "username" not in data.keys() or "password" not in data.keys():
-		raise Error("Parameter error")
-	username = data["username"]
-	password = data["password"]
+		username = data["username"]
+		password = data["password"]
 
-	print(username, password)
-	user = User.objects.filter(username = username).first() 
-	# print(user)
-	if user is None: 
-		user = User(username = username, password = generate_password_hash(password)).save()  
-		return make_response('Successfully registered.', 201) 
-	else: 
-		return make_response('User already exists. Please Log in.', 202) 
+		user = User.objects.filter(username = username).first() 
+
+		if user is None: 
+			user = User(username = username, password = generate_password_hash(password)).save() 
+			response = { "status" : "sucess", "message" :'Successfully registered.'} 
+			return make_response(jsonify(response), StatusCodes.ResponsesCode_200) 
+		else:
+			response = { "status" : "sucess", "message" :'User already exists. Please Log in.'} 
+			return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
+
+	except Exceptions.ParameterError:
+		response = Exceptions.getReponseMessage(
+		"ParameterError", "username or password missing"
+		)
+		logger.error('username or password missing in request')
+		return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
+
+
+	except Exception as e:
+		logger.warning(str(e))
+		response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
+		return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
