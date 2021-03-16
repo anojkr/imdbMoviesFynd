@@ -3,15 +3,15 @@ class MoviesSerializer(object):
         self.responseObj = responseObj
 
     def getReponse(self):
-        count = 1
+        # count = 1
         resp = {}
         for obj in self.responseObj:
-            resp[count] = {
+            resp[obj.movieName] = {
                 "movieName": obj.movieName,
                 "popularity": obj.popularity,
                 "director": obj.director,
                 "imdb_score": obj.imdbScore,
                 "genre_list": obj.genreList,
             }
-            count = count + 1
+            # count = count + 1
         return resp
