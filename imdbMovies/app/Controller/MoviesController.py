@@ -31,7 +31,7 @@ def homepageView():
     return "Welcome to IMDB API"
 
 
-@blueprint.route("/v1/add/movies", methods=["POST"])
+@blueprint.route("/api/v1/add/movies", methods=["POST"])
 def add_movies():
 
     if request.method == "POST":
@@ -58,7 +58,7 @@ def add_movies():
                 return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
             elif flag is False:
-                response = {"status": "fail", "message" : "duplicate data"}
+                response = {"status": "fail", "message": "duplicate data"}
                 return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
         except Exceptions.InputOutOfBounds:
@@ -78,7 +78,7 @@ def add_movies():
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
 
-@blueprint.route("/v1/get/movies", methods=["GET"])
+@blueprint.route("/api/v1/get/movies", methods=["GET"])
 def get_movies():
 
     if request.method == "GET":
@@ -97,7 +97,43 @@ def get_movies():
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
 
-@blueprint.route("/v1/get/search/movies", methods=["GET"])
+@blueprint.route("/api/v1/remove/movies", methods=["DELETE"])
+def delete_movie():
+
+    if request.method == "DELETE":
+
+        try:
+            movieID = request.args.get("movieid", None)
+
+            if movieID is None:
+                raise Exceptions.ParameterError
+
+            response = MoviesDAO.deleteMovie(movieID)
+
+            if response is True:
+                resp = {"status": "sucess"}
+                return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
+            else:
+                raise Exceptions.InvalidOperation
+
+        except Exceptions.ParameterError:
+            response = Exceptions.getReponseMessage(
+                "ParameterError", "missing input parameter"
+            )
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
+
+        except Exceptions.InvalidOperation:
+            response = Exceptions.getReponseMessage(
+                "InvalidOperation", "invalid movieid"
+            )
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
+
+        except Exception as e:
+            response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
+
+
+@blueprint.route("/api/v1/get/search/movies", methods=["GET"])
 def search_movies():
 
     if request.method == "GET":

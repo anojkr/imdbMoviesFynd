@@ -8,12 +8,12 @@ import uuid
 import datetime
 from app.Models.MoviesModels import Movies
 from app.Models.GenresModels import Genres
-
+from mongoengine import *
 
 class MovieGenre(Document):
 
-    genreID = ReferenceField(Genres)
-    movieID = ReferenceField(Movies)
+    genreID = ReferenceField(Genres, reverse_delete_rule=CASCADE)
+    movieID = ReferenceField(Movies, reverse_delete_rule=CASCADE)
     createdAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
     updatedAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
 

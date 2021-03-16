@@ -28,19 +28,43 @@ class TestMovies(unittest.TestCase):
     def test_add_movies_01(self):
 
         data = copy.deepcopy(TestMovies.data)
-        URL = HOST + "/v1/add/movies"
+        URL = HOST + "/api/v1/add/movies"
         headers = {"Content-Type": "application/json"}
 
         response = requests.post(url=URL, data=json.dumps(data), headers=headers)
 
         self.assertEqual(response.status_code, 200)
 
-    def test_get_movies(self):
+    def test_get_movies_02(self):
 
-        GETURL = HOST + "/v1/get/search/movies?name=Test10"
+        GETURL = HOST + "/api/v1/get/search/movies?name=Test10"
         headers = {"Content-Type": "application/json"}
 
         response = requests.get(url=GETURL, headers=headers)
         response_data = json.loads(response.content)["data"]["Test10"]["movieName"]
 
         self.assertEqual(response_data, "Test10")
+
+    def test_add_movies_03(self):
+
+        data = copy.deepcopy(TestMovies.data)
+        data.pop("director")
+
+        URL = HOST + "/api/v1/add/movies"
+        headers = {"Content-Type": "application/json"}
+
+        response = requests.post(url=URL, data=json.dumps(data), headers=headers)
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_add_movies_04(self):
+
+        data = copy.deepcopy(TestMovies.data)
+        data["imdb_score"] = 100
+
+        URL = HOST + "/api/v1/add/movies"
+        headers = {"Content-Type": "application/json"}
+
+        response = requests.post(url=URL, data=json.dumps(data), headers=headers)
+
+        self.assertEqual(response.status_code, 400)

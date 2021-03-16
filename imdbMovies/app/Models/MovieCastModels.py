@@ -8,12 +8,13 @@ import uuid
 import datetime
 from app.Models.CastModels import Cast
 from app.Models.MoviesModels import Movies
+from mongoengine import *
 
 
 class MovieCast(Document):
 
-    castID = ReferenceField(Cast)
-    movieID = ReferenceField(Movies)
+    castID = ReferenceField(Cast, reverse_delete_rule=CASCADE)
+    movieID = ReferenceField(Movies, reverse_delete_rule=CASCADE)
     role = StringField(default="Director")
     createdAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
     updatedAt = DateTimeField(required=True, default=datetime.datetime.utcnow())

@@ -10,6 +10,8 @@ from app.DAO.GenresDao import GenresDAO
 from app.DAO.MovieGenresDao import MovieGenresDAO
 from app.DAO.MovieCastDao import MovieCastDAO
 
+from app.Exceptions import Exceptions
+
 # from app.DAO.MovieGenresDao import
 
 
@@ -68,9 +70,7 @@ class MoviesDAO(object):
     def getSearchResult(
         popularity, movieName, director, genre, imdbScore, offset, limit
     ):
-        popularityResponse = Movies.objects.filter(
-            popularity__gte=popularity
-        )  # .skip(offset).limit(limit)
+        popularityResponse = Movies.objects.filter(popularity__gte=popularity)
         imdbscoreResponse = popularityResponse.filter(imdbScore__gte=imdbScore)
 
         responseResult = imdbscoreResponse
@@ -83,3 +83,9 @@ class MoviesDAO(object):
             responseResult = directorResponse
 
         return responseResult.skip(offset).limit(limit)
+
+    @staticmethod
+    def deleteMovie(movieID):
+        response = Movies.objects(id=movieID).delete()
+        response = True if response == 1 else False
+        return response

@@ -1,3 +1,4 @@
+
 class InternalServerError(Exception):
     pass
 
@@ -11,6 +12,10 @@ class ParameterError(Exception):
 
 
 class InputOutOfBounds(Exception):
+    pass
+
+
+class InvalidOperation(Exception):
     pass
 
 
