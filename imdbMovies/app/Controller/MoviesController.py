@@ -15,12 +15,20 @@ import uuid
 from app.DTO.MoviesSerializer import MoviesSerializer
 from app.Utils.DataParser import DataParser
 from mongoengine import connect
-from app.Config.settings import LIMIT
+
 from app.Exceptions import Exceptions
 from app.Utils.StatusCodes import StatusCodes
 
+import logging
+from app.Config.settings import Config
+from logging.config import dictConfig
+
 blueprint = Blueprint("movies", __name__)
 
+
+LIMIT = Config.LIMIT
+dictConfig(Config.LOGGER_CONFIGURATION)
+logger = logging.getLogger(__name__)
 
 @blueprint.route("/")
 def homepageView():
@@ -55,9 +63,11 @@ def add_movies():
 
             if flag is True:
                 response = {"status": "sucess"}
+                logger.info('movie = {} sucessfully saved in database'.format(movieName))
                 return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
             elif flag is False:
+                logger.info('duplicate data issue')
                 response = {"status": "fail", "message": "duplicate data"}
                 return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
@@ -65,15 +75,18 @@ def add_movies():
             response = Exceptions.getReponseMessage(
                 "InputOutOfBounds", "input value not valid"
             )
+            logger.error('parameter value outofbound in request')
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exceptions.ParameterError:
             response = Exceptions.getReponseMessage(
                 "ParameterError", "missing input parameter"
             )
+            logger.error('missing parameter in request')
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
+            logger.warning(str(e))
             response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
@@ -89,10 +102,10 @@ def get_movies():
             queryResp = MoviesDAO.getMovieList(page, LIMIT)
             response = MoviesSerializer(queryResp).getReponse()
             resp = {"status": "sucess", "data": response}
-
             return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
 
         except Exception as e:
+            logger.warning(str(e))
             response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
@@ -112,6 +125,7 @@ def delete_movie():
 
             if response is True:
                 resp = {"status": "sucess"}
+                logger.info('movie sucessfully deleted from records')
                 return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
             else:
                 raise Exceptions.InvalidOperation
@@ -120,15 +134,18 @@ def delete_movie():
             response = Exceptions.getReponseMessage(
                 "ParameterError", "missing input parameter"
             )
+            logger.error('missing parameter in request')
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exceptions.InvalidOperation:
             response = Exceptions.getReponseMessage(
                 "InvalidOperation", "invalid movieid"
             )
+            logger.error('invalid movieid in request')
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
+            logger.warning(str(e))
             response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
@@ -151,10 +168,10 @@ def search_movies():
             )
 
             response = MoviesSerializer(searchResult).getReponse()
-
             resp = {"status": "sucess", "data": response}
             return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
 
         except Exception as e:
+            logger.warning(str(e))
             response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
