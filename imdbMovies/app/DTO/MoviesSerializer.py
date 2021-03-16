@@ -1,9 +1,10 @@
+
 class MoviesSerializer(object):
     def __init__(self, responseObj):
         self.responseObj = responseObj
 
     def getReponse(self):
-        count = 0
+        count = 1
         resp = {}
         for obj in self.responseObj:
             resp[count] = {

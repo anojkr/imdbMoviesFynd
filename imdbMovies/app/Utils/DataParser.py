@@ -4,10 +4,10 @@ class DataParser(object):
     @staticmethod
     def validateParam(popularity, imdb_score):
         if popularity > 100 or popularity < 0:
-            raise Exceptions.InputOutOfBounds('index out of bound', 'enter valid value')
+            raise Exceptions.InputOutOfBounds
 
         if imdb_score > 10 or imdb_score < 0:
-            raise Exceptions.InputOutOfBounds('index out of bound', 'enter valid value')
+            raise Exceptions.InputOutOfBounds
 
     @staticmethod
     def validateRequestData(jsonData):
@@ -26,6 +26,8 @@ class DataParser(object):
         genre_list = jsonData.get("genre", [])
         imdb_score = float(jsonData.get("imdb_score", 0))
         name = jsonData.get("name", "").strip()
+
+        DataParser.validateParam(popularity, imdb_score)
 
         for index, value in enumerate(genre_list):
             genre_list[index] = value.strip()

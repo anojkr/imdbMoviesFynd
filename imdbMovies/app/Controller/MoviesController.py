@@ -17,6 +17,7 @@ from app.Utils.DataParser import DataParser
 from mongoengine import connect
 from app.Config.settings import LIMIT
 from app.Exceptions import Exceptions
+from app.Utils.StatusCodes import StatusCodes
 
 blueprint = Blueprint("movies", __name__)
 
@@ -44,9 +45,6 @@ def add_movies():
                 movieName,
             ) = DataParser.validateRequestData(data)
 
-            DataParser.validateParam(popularity, imdbScore)
-
-
             movie, flag = MoviesDAO.addMovies(
                 popularity=popularity,
                 director=director,
@@ -58,18 +56,17 @@ def add_movies():
             response = {"status": "sucess"}
             return make_response(jsonify(response), 200)
 
-
         except Exceptions.InputOutOfBounds:
-            response = {"status" : "fail", "error" : "index out of bound"}
-            return make_response(jsonify(response), 400)
+            response = Exceptions.getReponseMessage("InputOutOfBounds", "input value not valid")
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exceptions.ParameterError:
-            response = {"status" : "fail", "error" : "parameter error"}
-            return make_response(jsonify(response), 400)
+            response = Exceptions.getReponseMessage("ParameterError", "missing input parameter")
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
-            return make_response(jsonify(str(e)), 500)
-
+            response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
 
 @blueprint.route("/v1/get/movies", methods=["GET"])
@@ -77,12 +74,18 @@ def get_movies():
 
     if request.method == "GET":
 
-        page = int(request.args.get("page", 0))
-        queryResp = MoviesDAO.getMovieList(page, LIMIT)
-        response = MoviesSerializer(queryResp).getReponse()
+        try:
+            page = int(request.args.get("page", 0))
 
-        resp = {"status": "sucess", "data": response}
-        return make_response(jsonify(resp), 200)
+            queryResp = MoviesDAO.getMovieList(page, LIMIT)
+            response = MoviesSerializer(queryResp).getReponse()
+            resp = {"status": "sucess", "data": response}
+
+            return make_response(jsonify(resp), 200)
+
+        except Exception as e:
+            response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
 
 @blueprint.route("/v1/get/search/movies", methods=["GET"])
@@ -90,18 +93,23 @@ def search_movies():
 
     if request.method == "GET":
 
-        page = int(request.args.get("page", 0))
-        popularity = float(request.args.get("popularity", 0.0))
-        movieName = request.args.get("name", None)
-        director = request.args.get("director", None)
-        genre = request.args.get("genre", None)
-        imdbScore = request.args.get("imdbscore", 0)
+        try: 
+            page = int(request.args.get("page", 0))
+            popularity = float(request.args.get("popularity", 0.0))
+            movieName = request.args.get("name", None)
+            director = request.args.get("director", None)
+            genre = request.args.get("genre", None)
+            imdbScore = request.args.get("imdbscore", 0)
 
-        searchResult = MoviesDAO.getSearchResult(
-            popularity, movieName, director, genre, imdbScore, page, LIMIT
-        )
+            searchResult = MoviesDAO.getSearchResult(
+                popularity, movieName, director, genre, imdbScore, page, LIMIT
+            )
 
-        response = MoviesSerializer(searchResult).getReponse()
+            response = MoviesSerializer(searchResult).getReponse()
 
-        resp = {"status": "sucess", "data": response}
-        return make_response(jsonify(resp), 200)
+            resp = {"status": "sucess", "data": response}
+            return make_response(jsonify(resp), 200)
+            
+        except Exception as e:
+            response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
