@@ -10,6 +10,7 @@ from app.Models.MoviesModels import Movies
 from app.Models.GenresModels import Genres
 from mongoengine import *
 
+
 class MovieGenre(Document):
 
     genreID = ReferenceField(Genres, reverse_delete_rule=CASCADE)

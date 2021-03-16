@@ -65,5 +65,3 @@ class TestMovies(unittest.TestCase):
         response_data = json.loads(response.content)["data"]["Test Movie"]["movieName"]
 
         self.assertEqual(response_data, "Test Movie")
-
-

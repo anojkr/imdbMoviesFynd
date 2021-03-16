@@ -22,6 +22,8 @@ from app.Utils.StatusCodes import StatusCodes
 import logging
 from app.Config.settings import Config
 from logging.config import dictConfig
+from app.Utils.Repository import jwt_token_verify
+
 
 blueprint = Blueprint("movies", __name__)
 
@@ -29,6 +31,7 @@ blueprint = Blueprint("movies", __name__)
 LIMIT = Config.LIMIT
 dictConfig(Config.LOGGER_CONFIGURATION)
 logger = logging.getLogger(__name__)
+
 
 @blueprint.route("/")
 def homepageView():
@@ -40,6 +43,7 @@ def homepageView():
 
 
 @blueprint.route("/api/v1/add/movies", methods=["POST"])
+@jwt_token_verify
 def add_movies():
 
     if request.method == "POST":
@@ -63,11 +67,13 @@ def add_movies():
 
             if flag is True:
                 response = {"status": "sucess"}
-                logger.info('movie = {} sucessfully saved in database'.format(movieName))
+                logger.info(
+                    "movie = {} sucessfully saved in database".format(movieName)
+                )
                 return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
             elif flag is False:
-                logger.info('duplicate data issue')
+                logger.info("duplicate data issue")
                 response = {"status": "fail", "message": "duplicate data"}
                 return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
 
@@ -75,14 +81,14 @@ def add_movies():
             response = Exceptions.getReponseMessage(
                 "InputOutOfBounds", "input value not valid"
             )
-            logger.error('parameter value outofbound in request')
+            logger.error("parameter value outofbound in request")
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exceptions.ParameterError:
             response = Exceptions.getReponseMessage(
                 "ParameterError", "missing input parameter"
             )
-            logger.error('missing parameter in request')
+            logger.error("missing parameter in request")
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
@@ -92,6 +98,7 @@ def add_movies():
 
 
 @blueprint.route("/api/v1/get/movies", methods=["GET"])
+@jwt_token_verify
 def get_movies():
 
     if request.method == "GET":
@@ -111,6 +118,7 @@ def get_movies():
 
 
 @blueprint.route("/api/v1/remove/movies", methods=["DELETE"])
+@jwt_token_verify
 def delete_movie():
 
     if request.method == "DELETE":
@@ -125,7 +133,7 @@ def delete_movie():
 
             if response is True:
                 resp = {"status": "sucess"}
-                logger.info('movie sucessfully deleted from records')
+                logger.info("movie sucessfully deleted from records")
                 return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
             else:
                 raise Exceptions.InvalidOperation
@@ -134,14 +142,14 @@ def delete_movie():
             response = Exceptions.getReponseMessage(
                 "ParameterError", "missing input parameter"
             )
-            logger.error('missing parameter in request')
+            logger.error("missing parameter in request")
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exceptions.InvalidOperation:
             response = Exceptions.getReponseMessage(
                 "InvalidOperation", "invalid movieid"
             )
-            logger.error('invalid movieid in request')
+            logger.error("invalid movieid in request")
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
