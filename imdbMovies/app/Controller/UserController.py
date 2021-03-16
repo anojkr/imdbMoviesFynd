@@ -67,7 +67,7 @@ def signup_user():
             return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
         else:
             response = {
-                "status": "sucess",
+                "status": "fail",
                 "message": "User already exists. Please Log in.",
             }
             return make_response(jsonify(response), StatusCodes.ResponsesCode_200)

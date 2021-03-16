@@ -1,12 +1,7 @@
 import os
 import json
-import base64
-
 import unittest
 import requests
-
-
-from mongoengine import connect
 import copy
 
 HOST = "http://localhost:5000"
