@@ -62,7 +62,7 @@ def add_movies():
             )
 
             if flag is True:
-                response = {"status": "sucess"}
+                response = {"status": "sucess", "movieid" : movie.uid}
                 logger.info(
                     "movie = {} sucessfully saved in database".format(movieName)
                 )
@@ -94,7 +94,6 @@ def add_movies():
 
 
 @blueprint.route("/api/v1/get/movies", methods=["GET"])
-@jwt_token_verify
 def get_movies():
 
     if request.method == "GET":

@@ -86,6 +86,6 @@ class MoviesDAO(object):
 
     @staticmethod
     def deleteMovie(movieID):
-        response = Movies.objects(id=movieID).delete()
+        response = Movies.objects(uid=movieID).delete()
         response = True if response == 1 else False
         return response

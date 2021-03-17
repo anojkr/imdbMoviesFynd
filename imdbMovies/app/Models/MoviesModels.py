@@ -8,6 +8,7 @@ from mongoengine import (
     ListField,
     FloatField,
     DateTimeField,
+    UUIDField,
 )
 
 import uuid
@@ -17,6 +18,7 @@ from app.Models.CastModels import Cast
 
 class Movies(Document):
 
+    uid = UUIDField(binary=False, default=uuid.uuid4(), required=True)
     popularity = FloatField()
     director = StringField()
     imdbScore = FloatField()

@@ -10,6 +10,7 @@ import datetime
 
 class User(Document):
 
+    uid = UUIDField(binary=False, default=uuid.uuid4(), required=True)
     username = StringField(unique=True)
     password = StringField(unique=True)
     createdAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
