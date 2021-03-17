@@ -41,7 +41,26 @@ def homepageView():
 
 @auth_blueprint.route("/v1/user/signup", methods=["POST"])
 def signup_user():
+    """
+    A POST API to singup user-account
+    
+    Request API : /v1/user/signup
+    Request Body:
+    {
+        "username" : "testing",
+        "password" : "testing",
+    }
 
+    Response :
+    :RETURN : {
+                "status": "sucess",
+                "message": "Successfully registered.",
+                "uid": "35898034-a4rf-5d5e-9cb6-1be25923db04",
+              }
+    :RETURN : 400, Bad Request
+    :RETURN : 500, Internal Server Error
+
+    """
     data = request.json
     try:
         if "username" not in data.keys() or "password" not in data.keys():
@@ -91,6 +110,24 @@ def signup_user():
 
 @auth_blueprint.route("/v1/user/login", methods=["POST"])
 def login():
+    """
+    A POST API to login user-account
+    
+    Request API : /v1/user/login
+    Request Body:
+    {
+        "username" : "testing",
+        "password" : "testing",
+    }
+
+    Response :
+    :RETURN : {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+              }
+    :RETURN : 400, Bad Request
+    :RETURN : 500, Internal Server Error
+
+    """
     try:
         data = request.json
 

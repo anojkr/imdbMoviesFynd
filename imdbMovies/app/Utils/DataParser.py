@@ -1,9 +1,18 @@
 from app.Exceptions import Exceptions
 
-
+#DataParser class to format and  valid input request parameter
 class DataParser(object):
+
     @staticmethod
     def validateParam(popularity, imdb_score):
+        """
+1           This functions validate parameters for index-outof-bound error
+            ARGS:
+                popularity : movie popularity number
+                imdb_score : imdb_score of movie
+            RETURN:
+                raise InputOutofBound Exception if data not validated 
+        """
         if popularity > 100 or popularity < 0:
             raise Exceptions.InputOutOfBounds
 
@@ -12,6 +21,19 @@ class DataParser(object):
 
     @staticmethod
     def validateRequestData(jsonData):
+        """
+            This function parse the json-data and return value
+            ARGS:
+                jsonData : contains details of movies
+                
+            RETURN:
+                popularity(float) : popularity of movie range(1-100)
+                director(string) : director of movie
+                imdbScore(float) : imdb score of movie
+                movieName(string) : movie name
+                genreList(List of strings) : generes to which movie belong 
+        """
+
         parameter = {
             "99popularity": True,
             "director": True,

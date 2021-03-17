@@ -1,7 +1,5 @@
 from flask import Flask
 
-# from helpers.db import load_db
-# from helpers.parser import Parser
 # export FLASK_APP=webapp.py
 # sudo systemctl enable mongod
 # sudo service mongod start

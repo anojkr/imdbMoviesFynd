@@ -14,14 +14,16 @@ class TestMovies(unittest.TestCase):
         "genre": [" Fiction", " Fantasy"],
         "99popularity": 87,
         "imdb_score": 8.3,
-        "name": "Test Movie",
+        "name": "Test Movie"
     }
 
     useruid = None
     movieid = None
     token = None
 
-    def test_user_01(self):
+    def test_A(self):
+        #Test Request API : /v1/user/signup
+        #Signup user account
 
         LOGIN_URL = HOST + "/v1/user/signup"
         login_data = {"username": "test", "password": "test"}
@@ -33,7 +35,9 @@ class TestMovies(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_user_02(self):
+    def test_B(self):
+        #Test Request API : /v1/user/login
+        #Login user-account using credentials
 
         LOGIN_URL = HOST + "/v1/user/login"
         login_data = {"username": "test", "password": "test"}
@@ -43,21 +47,22 @@ class TestMovies(unittest.TestCase):
             data=json.dumps(login_data),
             headers={"Content-Type": "application/json"},
         )
-        self.token = json.loads(response.content)["token"]
+        TestMovies.token = json.loads(response.content)["token"]
         self.assertEqual(response.status_code, 200)
 
-    def test_add_movies_01(self):
-
+    def test_C(self):
+        #Test Request API: /api/v1/add/movies
+        #Add movies to database
         data = copy.deepcopy(TestMovies.data)
         URL = HOST + "/api/v1/add/movies"
-        headers = {"Content-Type": "application/json", "jwt-token": self.token}
+        headers = {"Content-Type": "application/json", "jwt-token": TestMovies.token}
 
         response = requests.post(url=URL, data=json.dumps(data), headers=headers)
-
         self.assertEqual(response.status_code, 200)
 
-    def test_add_movies_02(self):
-
+    def test_D(self):
+        #Test Request API: /api/v1/add/movies
+        #Testing parameter missing error for API
         data = copy.deepcopy(TestMovies.data)
         data.pop("director")
 
@@ -68,8 +73,9 @@ class TestMovies(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    def test_add_movies_03(self):
-
+    def test_E(self):
+        #Test Request API: /api/v1/add/movies
+        #Test outofbound index error of API
         data = copy.deepcopy(TestMovies.data)
         data["imdb_score"] = 100
 
@@ -79,8 +85,9 @@ class TestMovies(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    def test_get_movies_04(self):
-
+    def test_F(self):
+        #Test Request API: /api/v1/get/search/movies?name=Test Movie
+        #Test searching api for fetching results
         GETURL = HOST + "/api/v1/get/search/movies?name=Test Movie"
         headers = {"Content-Type": "application/json"}
         response = requests.get(url=GETURL, headers=headers)

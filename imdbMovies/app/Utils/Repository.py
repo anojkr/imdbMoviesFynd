@@ -7,7 +7,7 @@ from app.Utils.StatusCodes import StatusCodes
 
 SECRET_KEY = Config.SECRET_KEY
 
-
+#Decorator to verify jwt-token
 def jwt_token_verify(f):
     @wraps(f)
     def decorated(*args, **kwargs):

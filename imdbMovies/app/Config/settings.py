@@ -13,6 +13,7 @@ class Config(object):
     LIMIT = 10
     SECRET_KEY = os.environ.get("SECRET_KEY")
     DB_URI = os.environ.get("DB_URI")
+    # HOST = os.environ.get("HOST")
 
     LOGGER_CONFIGURATION = {
         "version": 1,
