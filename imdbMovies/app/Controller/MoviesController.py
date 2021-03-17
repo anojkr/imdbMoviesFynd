@@ -163,7 +163,7 @@ def search_movies():
             movieName = request.args.get("name", None)
             director = request.args.get("director", None)
             genre = request.args.get("genre", None)
-            imdbScore = request.args.get("imdbscore", 0)
+            imdbScore = float(request.args.get("imdbscore", 0.0))
             page = int(request.args.get("page", 0))
 
             searchResult = MoviesDAO.getSearchResult(

@@ -70,17 +70,18 @@ class MoviesDAO(object):
     def getSearchResult(
         popularity, movieName, director, genre, imdbScore, offset, limit
     ):
-        popularityResponse = Movies.objects.filter(popularity__gte=popularity)
-        imdbscoreResponse = popularityResponse.filter(imdbScore__gte=imdbScore)
+        responseResult = Movies.objects.filter()
+        if popularity > 0:
+            responseResult = responseResult.filter(popularity__gte=popularity)
+        
+        if imdbScore > 0:
+            responseResult = responseResult.filter(imdbScore__gte=imdbScore)
 
-        responseResult = imdbscoreResponse
         if movieName != None:
-            movieResponse = imdbscoreResponse.filter(movieName__icontains=movieName)
-            responseResult = movieResponse
+            responseResult = responseResult.filter(movieName__icontains=movieName)
 
         if director != None:
-            directorResponse = movieResponse.filter(director__icontains=director)
-            responseResult = directorResponse
+            responseResult = responseResult.filter(director__icontains=director)
 
         return responseResult.skip(offset).limit(limit)
 
