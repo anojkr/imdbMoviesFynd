@@ -39,7 +39,7 @@ def welcome_user():
 
 
 @blueprint.route("/api/v1/add/movies", methods=["POST"])
-@jwt_token_verify
+# @jwt_token_verify
 def add_movies():
     """
     A POST API to add movie record on database
@@ -218,6 +218,9 @@ def search_movies():
     Request API : /api/v1/get/search/movies?popularity=90&name=Batman&genre=Adventure&imdbscore=9&page=0
     All are optional parameters
 
+    genre (can be choosen form below list) : ["Fiction", "Fantasy", "Adventure", "Family", "Musical"
+    , "Action", "Sci-Fi", "Drama", "War", "Mystery", "Thriller"]
+
     Response:
     :RETURN 200, {
                     "data": {
@@ -247,7 +250,7 @@ def search_movies():
             genre = request.args.get("genre", None)
             imdbScore = float(request.args.get("imdbscore", 0.0))
             page = int(request.args.get("page", 0))
-            print(genre)
+            
             searchResult = MoviesDAO.getSearchResult(
                 popularity, movieName, director, genre, imdbScore, page, LIMIT
             )

@@ -121,7 +121,6 @@ class MoviesDAO(object):
             responseResult = responseResult.filter(director__icontains=director)
 
         if genre != None:
-            print(genre)
             responseResult = responseResult.filter(genreList__icontains=genre)
 
         return responseResult.skip(offset).limit(limit)
