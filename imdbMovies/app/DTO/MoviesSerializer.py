@@ -3,11 +3,11 @@ class MoviesSerializer(object):
         self.responseObj = responseObj
 
     def getReponse(self):
-        
+
         resp = {}
         for obj in self.responseObj:
             resp[obj.movieName] = {
-                "movieid" : obj.uid,
+                "movieid": obj.uid,
                 "movieName": obj.movieName,
                 "popularity": obj.popularity,
                 "director": obj.director,

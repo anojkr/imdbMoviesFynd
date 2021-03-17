@@ -12,7 +12,8 @@ from mongoengine import connect
 from app.Config.settings import Config
 
 
-connectObject = connect(host = Config.DB_URI)
+connectObject = connect(host=Config.DB_URI)
+
 
 def create_app():
 
@@ -25,4 +26,3 @@ def create_app():
 
     # Return app
     return app
-

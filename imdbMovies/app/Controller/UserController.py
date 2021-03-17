@@ -63,7 +63,11 @@ def signup_user():
             user = User(
                 username=username, password=generate_password_hash(password)
             ).save()
-            response = {"status": "sucess", "message": "Successfully registered."}
+            response = {
+                "status": "sucess",
+                "message": "Successfully registered.",
+                "uid": user.uid,
+            }
             return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
         else:
             response = {

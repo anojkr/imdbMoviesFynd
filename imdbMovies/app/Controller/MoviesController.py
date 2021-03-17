@@ -62,7 +62,7 @@ def add_movies():
             )
 
             if flag is True:
-                response = {"status": "sucess", "movieid" : movie.uid}
+                response = {"status": "sucess", "movieid": movie.uid}
                 logger.info(
                     "movie = {} sucessfully saved in database".format(movieName)
                 )
