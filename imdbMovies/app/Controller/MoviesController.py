@@ -141,7 +141,7 @@ def get_movies():
                             },
                     "status" : "sucess"
                 }
-    
+
     :RETURN 400, Bad Request
     :RETURN 500, Internal Server Error
 
@@ -234,7 +234,7 @@ def search_movies():
                             "popularity": 66.0
                             },
                     "status" : "sucess"
-                }    
+                }
     :RETURN: 500, Internal Server Error
 
     """
@@ -247,7 +247,7 @@ def search_movies():
             genre = request.args.get("genre", None)
             imdbScore = float(request.args.get("imdbscore", 0.0))
             page = int(request.args.get("page", 0))
-
+            print(genre)
             searchResult = MoviesDAO.getSearchResult(
                 popularity, movieName, director, genre, imdbScore, page, LIMIT
             )

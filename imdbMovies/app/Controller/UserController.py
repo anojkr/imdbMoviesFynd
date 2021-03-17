@@ -43,7 +43,7 @@ def homepageView():
 def signup_user():
     """
     A POST API to singup user-account
-    
+
     Request API : /v1/user/signup
     Request Body:
     {
@@ -112,7 +112,7 @@ def signup_user():
 def login():
     """
     A POST API to login user-account
-    
+
     Request API : /v1/user/login
     Request Body:
     {

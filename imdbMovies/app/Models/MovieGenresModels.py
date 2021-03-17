@@ -10,7 +10,7 @@ from app.Models.MoviesModels import Movies
 from app.Models.GenresModels import Genres
 from mongoengine import *
 
-#MovieGenres datamodel to save relation between movies and genres it belongs
+# MovieGenres datamodel to save relation between movies and genres it belongs
 class MovieGenre(Document):
 
     genreID = ReferenceField(Genres, reverse_delete_rule=CASCADE)

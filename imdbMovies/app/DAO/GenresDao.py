@@ -1,5 +1,5 @@
-
 from app.Models.GenresModels import Genres
+
 
 class GenresDAO(object):
     """
@@ -9,11 +9,11 @@ class GenresDAO(object):
     @staticmethod
     def addGenres(genresName):
         """
-            This function add record in Genres-datamodel
-            ARGS:
-                genresName(string) : genere of movie it belong
-            RETURN:
-                Genres datamodel object
+        This function add record in Genres-datamodel
+        ARGS:
+            genresName(string) : genere of movie it belong
+        RETURN:
+            Genres datamodel object
         """
         try:
             response = Genres.objects.get(genresName=genresName)
@@ -25,11 +25,11 @@ class GenresDAO(object):
     @staticmethod
     def getGenres(genresName):
         """
-            This function check genresName exists in Genres-datamodel
-            ARGS:
-                genresName(string) : genere of movie it belong
-            RETURN:
-                Geners datamodel object
+        This function check genresName exists in Genres-datamodel
+        ARGS:
+            genresName(string) : genere of movie it belong
+        RETURN:
+            Geners datamodel object
         """
         response = Genres.objects.filter(genresName=genresName).first()
         return response

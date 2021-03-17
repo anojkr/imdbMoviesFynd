@@ -1,7 +1,5 @@
-
-#MovieSerializer build the response of result fetched from Movie datamodel
+# MovieSerializer build the response of result fetched from Movie datamodel
 class MoviesSerializer(object):
-
     def __init__(self, responseObj):
         self.responseObj = responseObj
 

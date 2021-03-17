@@ -1,4 +1,3 @@
-
 from app.Models.CastModels import Cast
 
 
@@ -10,11 +9,11 @@ class CastDAO(object):
     @staticmethod
     def addCast(castName):
         """
-            This function add cast to Cast-datamodel
-            ARGS:
-                castName(string) : Name of movie cast 
-            RETURN:
-                Cast datamodel object
+        This function add cast to Cast-datamodel
+        ARGS:
+            castName(string) : Name of movie cast
+        RETURN:
+            Cast datamodel object
         """
         try:
             castResponse = Cast.objects.get(castName=castName)
@@ -26,12 +25,12 @@ class CastDAO(object):
     @staticmethod
     def getCast(castName):
         """
-            This function check if castName exists in Cast-datamodel
-            ARGS:
-                castName : Name of movie cast
-            
-            RETURN:
-                Cast datamodel object
+        This function check if castName exists in Cast-datamodel
+        ARGS:
+            castName : Name of movie cast
+
+        RETURN:
+            Cast datamodel object
         """
         castResponse = Cast.objects.filter(castName=castName).first()
         return castResponse

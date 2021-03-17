@@ -1,5 +1,4 @@
-
-#HTTP status codes resposes
+# HTTP status codes resposes
 class StatusCodes(object):
     ResponsesCode_500 = 500
     ResponsesCode_400 = 400

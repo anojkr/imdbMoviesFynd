@@ -15,7 +15,7 @@ import uuid
 import datetime
 from app.Models.CastModels import Cast
 
-#Movie datamodel to save details of movies
+# Movie datamodel to save details of movies
 class Movies(Document):
 
     uid = UUIDField(binary=False, default=uuid.uuid4(), required=True)
