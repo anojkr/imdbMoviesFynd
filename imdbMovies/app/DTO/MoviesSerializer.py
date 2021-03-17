@@ -1,3 +1,4 @@
+
 class MoviesSerializer(object):
     def __init__(self, responseObj):
         self.responseObj = responseObj

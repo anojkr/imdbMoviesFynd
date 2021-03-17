@@ -1,18 +1,21 @@
-"""
-A data access object file to provide an interface between DB and
-it's calling function for the genre and Movies table
-"""
 
 from app.Models.CastModels import Cast
 
 
 class CastDAO(object):
     """
-    A static Movies dao class to isolate Movies related functionality
+    A CastDAO to perform crud operations on Cast datamodel
     """
 
     @staticmethod
     def addCast(castName):
+        """
+            This function add cast to Cast-datamodel
+            ARGS:
+                castName(string) : Name of movie cast 
+            RETURN:
+                Cast datamodel object
+        """
         try:
             castResponse = Cast.objects.get(castName=castName)
             return castResponse
@@ -22,5 +25,13 @@ class CastDAO(object):
 
     @staticmethod
     def getCast(castName):
+        """
+            This function check if castName exists in Cast-datamodel
+            ARGS:
+                castName : Name of movie cast
+            
+            RETURN:
+                Cast datamodel object
+        """
         castResponse = Cast.objects.filter(castName=castName).first()
         return castResponse

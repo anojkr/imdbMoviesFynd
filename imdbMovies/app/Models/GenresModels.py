@@ -7,7 +7,7 @@ from mongoengine import StringField, UUIDField, DateTimeField
 import uuid
 import datetime
 
-
+#Genre datamodel save record for types of movie genere
 class Genres(Document):
 
     genresName = StringField(unique=True)

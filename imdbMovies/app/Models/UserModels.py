@@ -7,7 +7,7 @@ from mongoengine import StringField, UUIDField, DateTimeField
 import uuid
 import datetime
 
-
+#User datamodel save user-details for login authentication
 class User(Document):
 
     uid = UUIDField(binary=False, default=uuid.uuid4(), required=True)

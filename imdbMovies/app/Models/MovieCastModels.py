@@ -10,7 +10,7 @@ from app.Models.CastModels import Cast
 from app.Models.MoviesModels import Movies
 from mongoengine import *
 
-
+#MoviesCast datamodel save details of casts such as actor, actress, director etc. related to movies
 class MovieCast(Document):
 
     castID = ReferenceField(Cast, reverse_delete_rule=CASCADE)

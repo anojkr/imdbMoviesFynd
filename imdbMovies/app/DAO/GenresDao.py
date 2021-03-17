@@ -1,18 +1,20 @@
-"""
-A data access object file to provide an interface between DB and
-it's calling function for the genre and Movies table
-"""
 
 from app.Models.GenresModels import Genres
 
-
 class GenresDAO(object):
     """
-    A static Movies dao class to isolate Movies related functionality
+    GenresDAO class to perform crud operation on Genres-datamodel
     """
 
     @staticmethod
     def addGenres(genresName):
+        """
+            This function add record in Genres-datamodel
+            ARGS:
+                genresName(string) : genere of movie it belong
+            RETURN:
+                Genres datamodel object
+        """
         try:
             response = Genres.objects.get(genresName=genresName)
             return response
@@ -22,5 +24,12 @@ class GenresDAO(object):
 
     @staticmethod
     def getGenres(genresName):
+        """
+            This function check genresName exists in Genres-datamodel
+            ARGS:
+                genresName(string) : genere of movie it belong
+            RETURN:
+                Geners datamodel object
+        """
         response = Genres.objects.filter(genresName=genresName).first()
         return response

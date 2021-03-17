@@ -1,7 +1,3 @@
-"""
-A data access object file to provide an interface between DB and
-it's calling function for the genre and Movies table
-"""
 
 from app.Models.GenresModels import Genres
 from app.Models.MoviesModels import Movies
@@ -10,11 +6,19 @@ from app.Models.MovieGenresModels import MovieGenre
 
 class MovieGenresDAO(object):
     """
-    A static Movies dao class to isolate Movies related functionality
+        MovieGenresDAO is class to perform crud operations on MovieGenres datamodel
     """
 
     @staticmethod
     def addMovieGenres(movieID, genreID):
+        """
+            This function save record on MovieGenres datamodel
+            ARGS:
+                movieID : object_id of Movie datamodel
+                genreID : object_id of Genres datamodel
+            RETURN:
+                MovieGenres datamodel object 
+        """
         try:
             response = MovieGenre.objects.get(genreID=genreID, movieID=movieID)
             return response
@@ -25,12 +29,24 @@ class MovieGenresDAO(object):
 
     @staticmethod
     def getByGenre(genreID, offset, limit):
-        # genreID = Genres.objects.get(movieName = genresName)
+        """
+            This function get movies list based on genereID
+            ARGS:
+                genreID : object_id of Genres datamodel
+            RETURN:
+                MovieGenre datamodel object
+        """
         response = MovieGenre.objects.filter(genreID=genreID).skip(offset).limit(limit)
         return response
 
     @staticmethod
     def getByMovie(movieID, offset, limit):
-        # movieID = Movies.objects.get(movieName = movieName)
+        """
+            This function get genreID list based on movieID
+            ARGS:
+                movieID : object_id of Movie datamodel
+            RETURN:
+                MovieGenre datamodel object
+        """
         response = MovieGenre.objects.filter(movieID=movieID).skip(offset).limit(limit)
         return response

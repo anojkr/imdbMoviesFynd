@@ -1,7 +1,3 @@
-"""
-A data access object file to provide an interface between DB and
-it's calling function for the genre and Movies table
-"""
 
 from app.Models.CastModels import Cast
 from app.Models.MoviesModels import Movies
@@ -17,11 +13,23 @@ from app.Exceptions import Exceptions
 
 class MoviesDAO(object):
     """
-    A static Movies dao class to isolate Movies related functionality
+        MoviesDAO is class to perform crud operations on Movie datamodel
     """
 
     @staticmethod
     def addMovies(popularity, director, imdbScore, movieName, genreList):
+        """
+            This function add record on Movie datamodel
+            ARGS:
+                popularity(float) : popularity of movie range(1-100)
+                director(string) : director of movie
+                imdbScore(float) : imdb score of movie
+                movieName(string) : movie name
+                genreList(List of strings) : generes to which movie belong 
+
+            RETURN:
+                Movie datamodel object 
+        """
 
         try:
             response = Movies.objects.get(movieName=movieName)
@@ -49,11 +57,21 @@ class MoviesDAO(object):
 
     @staticmethod
     def getMovieList(offset, limit):
+        """
+            This function Movie datamodel object containing all movies
+        """
         query = Movies.objects.filter().skip(offset).limit(limit)
         return query
 
     @staticmethod
     def getmoviesPopularity(popularity, offset, limit):
+        """
+            This function return list of movies having popularity greatest than <popularity> parameter
+            ARGS:
+                popularity(float) : popularity of movie
+            RETURN:
+                Movies datamodel object
+        """
         query = (
             Movies.objects.filter(popularity__gte=popularity).skip(offset).limit(limit)
         )
@@ -61,6 +79,13 @@ class MoviesDAO(object):
 
     @staticmethod
     def getmoviesImdbScore(imdbScore, offset, limit):
+        """
+            This function return list of movies having imdbScore greatest than <imdbScore> parameter
+            ARGS:
+                imdbscore(float) : imdb-score of movie
+            RETURN:
+                Movies datamodel object
+        """
         query = (
             Movies.objects.filter(imdbScore__gte=imdbScore).skip(offset).limit(limit)
         )
@@ -70,6 +95,19 @@ class MoviesDAO(object):
     def getSearchResult(
         popularity, movieName, director, genre, imdbScore, offset, limit
     ):
+
+        """
+            This function filter result from Movies datamodel based on functional parameters an return Movies datamodel object
+            ARGS:
+                popularity(float) : popularity of movie range(1-100)
+                director(string) : director of movie
+                imdbScore(float) : imdb score of movie
+                movieName(string) : movie name
+                genreList(List of strings) : generes to which movie belong 
+
+            RETURN:
+                Movie datamodel object 
+        """
         responseResult = Movies.objects.filter()
         if popularity > 0:
             responseResult = responseResult.filter(popularity__gte=popularity)
@@ -87,6 +125,15 @@ class MoviesDAO(object):
 
     @staticmethod
     def deleteMovie(movieID):
+
+        """
+            This function delete record from Movies datamodel for given movieID in parameter
+            ARGS:
+                movieID : object_id of Movies datamodel
+            RETURN:
+                True : if delete operation sucessfully
+                False: if failed to find movieID on Movies datamodel
+        """
         response = Movies.objects(uid=movieID).delete()
         response = True if response == 1 else False
         return response
