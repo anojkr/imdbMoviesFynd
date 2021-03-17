@@ -1,14 +1,13 @@
-# imdbMoviesFynd
-imdbMoviesFynd
-
 ## Authentication API
 
 #### User signup API [POST]
  API : https://imdb-movies-apps.herokuapp.com/v1/user/signup
+ ```
 Request body = {
 "username" : "testing",
 "password" : "testing"
 }
+```
 
     """
     A POST API to singup user-account
@@ -33,10 +32,12 @@ Request body = {
 ------------------------------------
 ### User login AP [POST]
  API : https://imdb-movies-apps.herokuapp.com/v1/user/login
+```
 Request body = {
 "username" : "testing",
 "password" : "testing"
 }
+```
 
     """
     A POST API to login user-account
@@ -60,7 +61,8 @@ Request body = {
 
 ### Add movie to database [POST]
 API : https://imdb-movies-apps.herokuapp.com/api/v1/add/movies
-    Request Body :  {
+```  
+Request Body :  {
 			        "99popularity": 88.0,
 			        "director": "George Lucas",
 			        "genre": [
@@ -72,7 +74,8 @@ API : https://imdb-movies-apps.herokuapp.com/api/v1/add/movies
 			        "imdb_score": 8.8,
 			        "name": "Star Wars"
 		    }
-		    
+```
+
     """
     A POST API to add movie record on database
     Request API : /api/v1/add/movies
@@ -102,7 +105,7 @@ API : https://imdb-movies-apps.herokuapp.com/api/v1/add/movies
   ----------------------------------------
   ### List movies API [GET]
   API : https://imdb-movies-apps.herokuapp.com/api/v1/get/movies
-  
+ 
     """
     A GET API to get list of all movies in database
     Request API : /api/v1/get/movies
@@ -146,12 +149,15 @@ API : https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=rad123
 -------------------------------------------------------------------------
  ### Search movie API [GET]
 API : https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?name=Batman
+```
 optional-parameters 
 {name=movie-name}
 {imdbscore = 8}
 {page=1}
 {popularity=80}
-{genre = choose from list}
+{genre = choose from below list}
+```
+
 ```
 Genre list
 ["Fiction", "Fantasy", "Adventure", "Family", "Musical"
