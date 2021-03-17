@@ -19,9 +19,15 @@ class TestMovies(unittest.TestCase):
 
     def test_add_movies_01(self):
 
+        LOGIN_URL = HOST + "/v1/user/login"
+        login_data = {"username" : "test", "password" :"test"}
+
+        response = requests.post(url=LOGIN_URL, data=json.dumps(login_data), headers={"Content-Type": "application/json"})
+        token = json.loads(response.content)['token']
+
         data = copy.deepcopy(TestMovies.data)
         URL = HOST + "/api/v1/add/movies"
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json", "jwt-token" : token}
 
         response = requests.post(url=URL, data=json.dumps(data), headers=headers)
 
