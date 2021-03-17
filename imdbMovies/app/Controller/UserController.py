@@ -55,7 +55,7 @@ def signup_user():
                 "status": "fail",
                 "message": "username or password cannot be empty",
             }
-            return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         user = User.objects.filter(username=username).first()
 

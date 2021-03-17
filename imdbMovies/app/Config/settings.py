@@ -1,6 +1,7 @@
 """
 This file contains project config related settings
 """
+import os
 
 
 class Config(object):
@@ -10,7 +11,9 @@ class Config(object):
     """
 
     LIMIT = 10
-    SECRET_KEY = "bkajsdlsjdfe32409823480ljkfajofjoa90r32809"
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    DB_URI =  os.environ.get('DB_URI')
+
     LOGGER_CONFIGURATION = {
         "version": 1,
         "formatters": {

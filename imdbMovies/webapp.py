@@ -9,16 +9,12 @@ from flask import Flask
 from app.Controller.MoviesController import blueprint
 from app.Controller.UserController import auth_blueprint
 from mongoengine import connect
+from app.Config.settings import Config
 
-connectObject = connect("imdb", host="127.0.0.1", port=27017)
 
+connectObject = connect(host = Config.DB_URI)
 
 def create_app():
-    # Create DB
-    # load_db()
-
-    # parser = Parser('imdb.json')
-    # parser.populate()
 
     # Instantiate flask app
     app = Flask(__name__)
@@ -29,3 +25,4 @@ def create_app():
 
     # Return app
     return app
+

@@ -34,16 +34,12 @@ logger = logging.getLogger(__name__)
 
 
 @blueprint.route("/")
-def homepageView():
-    """
-    A test API to check if flask is properly configured
-    :return:
-    """
-    return "Welcome to IMDB API"
+def welcome_user():
+    return "Imdb api service"
 
 
 @blueprint.route("/api/v1/add/movies", methods=["POST"])
-@jwt_token_verify
+# @jwt_token_verify
 def add_movies():
 
     if request.method == "POST":
