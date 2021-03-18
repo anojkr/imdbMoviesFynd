@@ -1,5 +1,6 @@
-## Authentication API
 
+## Authentication API
+- All request body in api is in json-format
 #### User signup API [POST]
  API : https://imdb-movies-apps.herokuapp.com/v1/user/signup
  ```
@@ -62,18 +63,21 @@ Request body = {
 ### Add movie to database [POST]
 API : https://imdb-movies-apps.herokuapp.com/api/v1/add/movies
 ```  
+Header = {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+         }
 Request Body :  {
-			        "99popularity": 88.0,
-			        "director": "George Lucas",
-			        "genre": [
-			          "Action",
-			          " Adventure",
-			          " Fantasy",
-			          " Sci-Fi"
-			        ],
-			        "imdb_score": 8.8,
-			        "name": "Star Wars"
-		    }
+                    "99popularity": 88.0,
+                    "director": "George Lucas",
+                    "genre": [
+                      "Action",
+                      " Adventure",
+                      " Fantasy",
+                      " Sci-Fi"
+                    ],
+                    "imdb_score": 8.8,
+                    "name": "Star Wars"
+        }
 ```
 
     """
