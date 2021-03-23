@@ -4,13 +4,13 @@ from app.DAO.CastDao import CastDAO
 from app.DAO.GenresDao import GenresDAO
 from app.DAO.MovieGenresDao import MovieGenresDAO
 from app.DAO.MovieCastDao import MovieCastDAO
-
+from app.DAO.MovieInterface import MovieInterface
 from app.Exceptions import Exceptions
 
 # from app.DAO.MovieGenresDao import
 
 
-class MoviesDAO(object):
+class MoviesDAO(MovieInterface):
     """
     MoviesDAO is class to perform crud operations on Movie datamodel
     """

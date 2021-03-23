@@ -1,7 +1,7 @@
 from app.Models.GenresModels import Genres
+from app.DAO.GenresInterface import GenresInterface
 
-
-class GenresDAO(object):
+class GenresDAO(GenresInterface):
     """
     GenresDAO class to perform crud operation on Genres-datamodel
     """

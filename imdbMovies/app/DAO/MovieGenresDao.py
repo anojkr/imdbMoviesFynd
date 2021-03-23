@@ -1,9 +1,9 @@
 from app.Models.GenresModels import Genres
 from app.Models.MoviesModels import Movies
 from app.Models.MovieGenresModels import MovieGenre
+from app.DAO.MovieGenresInterface import MovieGenresInterface
 
-
-class MovieGenresDAO(object):
+class MovieGenresDAO(MovieGenresInterface):
     """
     MovieGenresDAO is class to perform crud operations on MovieGenres datamodel
     """
