@@ -40,8 +40,9 @@ Request body = {
     Request API : /v1/user/signup
     Request Body:
     {
-        "username" : "testing",
-        "password" : "testing"
+        "username" : "admin",
+        "password" : "admin",
+        "usertype" : "ADMIN"
     }
 
     Response :
@@ -59,8 +60,8 @@ Request body = {
  API : https://imdb-movies-apps.herokuapp.com/v1/user/login
 ```
 Request body = {
-"username" : "testing",
-"password" : "testing"
+"username" : "admin",
+"password" : "admin"
 }
 ```
 
@@ -70,8 +71,8 @@ Request body = {
     Request API : /v1/user/login
     Request Body:
     {
-        "username" : "testing",
-        "password" : "testing"
+        "username" : "admin",
+        "password" : "admin"
     }
 
     Response :
@@ -233,7 +234,7 @@ API : https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=5be406
 -------------------------------------------------------------------------
  ### Search movie API [GET]
 API : https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?name=Batman
-- **CLIENT** user authorized to access this api
+-- **CLIENT** user authorized to access this api
 
 ```
 optional-parameters 
