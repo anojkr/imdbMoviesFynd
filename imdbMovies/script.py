@@ -6,7 +6,8 @@ f = open(
 data = json.load(f)
 
 for record in data:
-    url = "http://localhost:5000/api/v1/add/movies"
+    # url = "http://localhost:5000/api/v1/add/movies"
+    url = "https://imdb-movies-apps.herokuapp.com"
     header = {"Content-Type": "application/json"}
     response = requests.post(url=url, data=json.dumps(record), headers=header)
     print(response)

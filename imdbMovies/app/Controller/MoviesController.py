@@ -123,7 +123,7 @@ def add_movies():
 def edit_movies():
     """
     A PUT API to add movie record on database
-    Request API : /api/v1/update/movies?movieid=
+    Request API : /api/v1/update/movies?movieid=15a084e7-27da-4818-9e24-1cb88799b46c
 
     headers = {"Content-Type": "application/json",
         "jwt-token" : "token-value"
@@ -134,7 +134,6 @@ def edit_movies():
         "director": "George Methew",
         "genre": [
           "Action",
-          " Adventure",
           " Fantasy",
           " Sci-Fi"
         ],

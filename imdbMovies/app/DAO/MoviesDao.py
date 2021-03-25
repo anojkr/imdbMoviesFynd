@@ -66,7 +66,7 @@ class MoviesDAO(MovieInterface):
             genreList(List of strings) : generes to which movie belong
 
         RETURN:
-            Movie datamodel object
+            Movie datamodel object, Boolean-value
         """
 
         try:
@@ -82,9 +82,7 @@ class MoviesDAO(MovieInterface):
             return movieObject, True
         
         except Exception as e:
-            print(e)
             return None, False
-
 
 
     @staticmethod

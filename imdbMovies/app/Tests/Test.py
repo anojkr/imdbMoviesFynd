@@ -4,8 +4,8 @@ import unittest
 import requests
 import copy
 
-# HOST = "https://imdb-movies-apps.herokuapp.com"
-HOST = "http://localhost:5000"
+HOST = "https://imdb-movies-apps.herokuapp.com"
+# HOST = "http://localhost:5000"
 
 class TestMovies(unittest.TestCase):
 
@@ -26,7 +26,7 @@ class TestMovies(unittest.TestCase):
         # Signup user account
 
         LOGIN_URL = HOST + "/v1/user/signup"
-        login_data = {"username": "test", "password": "test"}
+        login_data = {"username": "test", "password": "test", "usertype" : "ADMIN"}
 
         response = requests.post(
             url=LOGIN_URL,
@@ -67,7 +67,7 @@ class TestMovies(unittest.TestCase):
         data.pop("director")
 
         URL = HOST + "/api/v1/add/movies"
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json", "jwt-token": TestMovies.token}
 
         response = requests.post(url=URL, data=json.dumps(data), headers=headers)
 
@@ -80,17 +80,8 @@ class TestMovies(unittest.TestCase):
         data["imdb_score"] = 100
 
         URL = HOST + "/api/v1/add/movies"
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json", "jwt-token": TestMovies.token}
         response = requests.post(url=URL, data=json.dumps(data), headers=headers)
 
         self.assertEqual(response.status_code, 400)
 
-    def test_F(self):
-        # Test Request API: /api/v1/get/search/movies?name=Test Movie
-        # Test searching api for fetching results
-        GETURL = HOST + "/api/v1/get/search/movies?name=Test Movie"
-        headers = {"Content-Type": "application/json"}
-        response = requests.get(url=GETURL, headers=headers)
-        response_data = json.loads(response.content)["data"]["Test Movie"]["movieName"]
-
-        self.assertEqual(response_data, "Test Movie")

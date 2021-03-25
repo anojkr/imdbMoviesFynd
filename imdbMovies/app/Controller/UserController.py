@@ -164,7 +164,7 @@ def login():
                 {
                     "username": user.username,
                     "usertype": user.usertype,
-                    "exp": datetime.utcnow() + timedelta(minutes=30),
+                    "exp": datetime.utcnow() + timedelta(hours=3),
                 },
                 SECRET_KEY,
             )

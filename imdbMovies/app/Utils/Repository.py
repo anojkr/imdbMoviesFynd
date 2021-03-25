@@ -27,7 +27,10 @@ def admin_jwt_token_verify(f):
             if data["usertype"] == "ADMIN":
                 User.objects(username=data["username"]).first()
             else:
-                raise Exception
+                return (
+                    jsonify({"message": "User not permitted to access api !!"}),
+                    StatusCodes.ResponsesCode_400,
+                )
         except:
             return (
                 jsonify({"message": "authentication token is invalid !!"}),
@@ -58,7 +61,10 @@ def client_jwt_token_verify(f):
             if data["usertype"] == "CLIENT":
                 User.objects(username=data["username"]).first()
             else:
-                raise Exception
+                return (
+                    jsonify({"message": "User not permitted to access api!!"}),
+                    StatusCodes.ResponsesCode_400,
+                )
         except:
             return (
                 jsonify({"message": "authentication token is invalid !!"}),
