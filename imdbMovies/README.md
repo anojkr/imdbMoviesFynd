@@ -146,6 +146,8 @@ API : https://imdb-movies-apps.herokuapp.com/api/v1/update/movies?movieid=5be406
 Header = {
     "jwt-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
          }
+```
+```
 Request Body :  {
                     "99popularity": 90.0,
                     "director": "George Thomas",
@@ -188,11 +190,18 @@ Request Body :  {
   ### List movies API [GET]
   API : https://imdb-movies-apps.herokuapp.com/api/v1/get/movies
  -- **CLIENT** users authorized to access this api
- 
+ ```
+ Header = {
+    "jwt-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+         }
+```
     """
     A GET API to get list of all movies in database
     Request API : /api/v1/get/movies
-
+    headers = {"Content-Type": "application/json",
+        "jwt-token" : "token-value"
+     }
+     
     Response:
     :RETURN 200, {
                     "data": {
@@ -221,11 +230,20 @@ Request Body :  {
 API : https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=5be4060e-0967-4e32-b7c4-dd37803e5bb3
 
 -- **ADMIN** user authorized to access this api
+```
+Header = {
+    "jwt-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+         }
+```
 
     """
     A DELETE API to remove databse record from Movies datamodel based on uid parameter
     Request API : /api/v1/remove/movies?movieid=rad123omodzoipaosd
-
+    
+    headers = {"Content-Type": "application/json",
+        "jwt-token" : "token-value"
+     }
+     
     Response:
     :RETURN : 200, {"status" : "sucess"}
     :RETURN : 400 Bad Request
@@ -235,6 +253,11 @@ API : https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=5be406
  ### Search movie API [GET]
 API : https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?name=Batman
 -- **CLIENT** user authorized to access this api
+```
+Header = {
+    "jwt-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+         }
+```
 
 ```
 optional-parameters 
@@ -257,10 +280,15 @@ https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?popularity=90&na
      """
     A GET API to search for movies based on different parameters
     Request API : /api/v1/get/search/movies?popularity=90&name=Batman&genre=Adventure&imdbscore=9&page=0
+    
     All are optional parameters
 
     genre (can be choosen form below list) : ["Fiction", "Fantasy", "Adventure", "Family", "Musical"
     , "Action", "Sci-Fi", "Drama", "War", "Mystery", "Thriller"]
+    
+    headers = {"Content-Type": "application/json",
+        "jwt-token" : "token-value"
+     }
 
     Response:
     :RETURN 200, {
