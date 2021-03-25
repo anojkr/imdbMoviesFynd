@@ -8,10 +8,14 @@
 
 ```
 User can be only of two types ADMIN and CLIENT
-- ADMIN users allowed to access all API'S
-- CLIENT users can only access search and getmovies api's mentioned below
-https://imdb-movies-apps.herokuapp.com/api/v1/get/movies
-https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?name=Batman
+- "ADMIN" users allowed to add,edit and delete movie API'S mentioned below
+1. https://imdb-movies-apps.herokuapp.com/api/v1/add/movies
+2. https://imdb-movies-apps.herokuapp.com/api/v1/update/movies?movieid=5be4060e-0967-4e32-b7c4-dd37803e5bb3
+3. https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=5be4060e-0967-4e32-b7c4-dd37803e5bb3
+
+- "CLIENT" users can only access search and getmovies api's mentioned below
+4. https://imdb-movies-apps.herokuapp.com/api/v1/get/movies
+5. https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?name=Batman
 ```
 
  ```
@@ -205,7 +209,7 @@ Request Body :  {
     
 -------------------------------------------------------------------------------
 ### Delete movie API [DELETE]
-API : https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=rad123omodzoipaosd
+API : https://imdb-movies-apps.herokuapp.com/api/v1/remove/movies?movieid=5be4060e-0967-4e32-b7c4-dd37803e5bb3
 
 -- **ADMIN** user authorized to access this api
 
