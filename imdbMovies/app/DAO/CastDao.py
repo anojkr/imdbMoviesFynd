@@ -1,7 +1,7 @@
 from app.Models.CastModels import Cast
+from app.DAO.CastInterface import CastInterface
 
-
-class CastDAO(object):
+class CastDAO(CastInterface):
     """
     A CastDAO to perform crud operations on Cast datamodel
     """

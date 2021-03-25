@@ -1,8 +1,8 @@
 from app.Models.CastModels import Cast
 from app.Models.MovieCastModels import MovieCast
+from app.DAO.MovieCastInterface import MovieCastInterface
 
-
-class MovieCastDAO(object):
+class MovieCastDAO(MovieCastInterface):
     """
     MovieCastDAO class is to perform crud operations on MoviesCast datamodel
     """

@@ -4,8 +4,8 @@ import unittest
 import requests
 import copy
 
-HOST = "https://imdb-movies-apps.herokuapp.com"
-
+# HOST = "https://imdb-movies-apps.herokuapp.com"
+HOST = "http://localhost:5000"
 
 class TestMovies(unittest.TestCase):
 
