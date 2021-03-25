@@ -22,7 +22,7 @@ from app.Utils.StatusCodes import StatusCodes
 import logging
 from app.Config.settings import Config
 from logging.config import dictConfig
-from app.Utils.Repository import jwt_token_verify
+from app.Utils.Repository import admin_jwt_token_verify, client_jwt_token_verify
 
 
 blueprint = Blueprint("movies", __name__)
@@ -39,7 +39,7 @@ def welcome_user():
 
 
 @blueprint.route("/api/v1/add/movies", methods=["POST"])
-# @jwt_token_verify
+@admin_jwt_token_verify
 def add_movies():
     """
     A POST API to add movie record on database
@@ -118,43 +118,80 @@ def add_movies():
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
 
-@blueprint.route("/api/v1/get/movies", methods=["GET"])
-def get_movies():
+@blueprint.route("/api/v1/update/movies", methods=["PUT"])
+@admin_jwt_token_verify
+def edit_movies():
     """
-    A GET API to get list of all movies in database
-    Request API : /api/v1/get/movies
+    A PUT API to add movie record on database
+    Request API : /api/v1/update/movies?movieid=
+
+    headers = {"Content-Type": "application/json",
+        "jwt-token" : "token-value"
+     }
+
+    Request Body :  {
+        "99popularity": 89.0,
+        "director": "George Methew",
+        "genre": [
+          "Action",
+          " Adventure",
+          " Fantasy",
+          " Sci-Fi"
+        ],
+        "imdb_score": 8.9,
+        "name": "Star Wars"
+    }
 
     Response:
-    :RETURN 200, {
-                    "data": {
-                        "Cabiria": {
-                            "director": "Giovanni Pastrone",
-                            "genre_list": [
-                                "Adventure",
-                                "Drama",
-                                "War"
-                            ],
-                            "imdb_score": 6.6,
-                            "movieName": "Cabiria",
-                            "movieid": "e856a522-8354-400a-bd65-01e9808db743",
-                            "popularity": 66.0
-                            },
-                    "status" : "sucess"
-                }
-
-    :RETURN 400, Bad Request
-    :RETURN 500, Internal Server Error
-
+    :RETURN: 200, {"status" : "sucess", "movieid" : "15a084e7-27da-4818-9e24-1cb88799b46c"}
+    :RETURN: 400, Bad Request
+    :RETURN: 500, Internal Server Error
     """
-    if request.method == "GET":
-
+    if request.method == "PUT":
+        movieid = request.args.get("movieid", None)
         try:
-            page = int(request.args.get("page", 0))
+            data = request.json
+            (
+                popularity,
+                director,
+                genreList,
+                imdbScore,
+                movieName,
+            ) = DataParser.validateRequestData(data)
 
-            queryResp = MoviesDAO.getMovieList(page, LIMIT)
-            response = MoviesSerializer(queryResp).getReponse()
-            resp = {"status": "sucess", "data": response}
-            return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
+            movie, flag = MoviesDAO.updateMovies(movieid = movieid,
+                popularity=popularity,
+                director=director,
+                imdbScore=imdbScore,
+                movieName=movieName,
+                genreList=genreList,
+            )
+
+            if flag is True:
+                response = {"status": "sucess", "movieid": movie.uid}
+                logger.info(
+                    "movie = {} sucessfully updated in database".format(movieName)
+                )
+                return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
+
+            elif flag is False:
+                logger.info("error updating movie")
+                response = {"status": "fail", "message": "no record found in database"}
+                return make_response(jsonify(response), StatusCodes.ResponsesCode_200)
+
+        except Exceptions.InputOutOfBounds:
+            response = Exceptions.getReponseMessage(
+                "InputOutOfBounds", "input value not valid"
+            )
+            logger.error("parameter value outofbound in request")
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
+
+        except Exceptions.ParameterError:
+            response = Exceptions.getReponseMessage(
+                "ParameterError", "missing input parameter"
+            )
+            logger.error("missing parameter in request")
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         except Exception as e:
             logger.warning(str(e))
@@ -163,7 +200,7 @@ def get_movies():
 
 
 @blueprint.route("/api/v1/remove/movies", methods=["DELETE"])
-@jwt_token_verify
+@admin_jwt_token_verify
 def delete_movie():
     """
     A DELETE API to remove databse record from Movies datamodel based on uid parameter
@@ -211,7 +248,53 @@ def delete_movie():
             return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
 
 
+@blueprint.route("/api/v1/get/movies", methods=["GET"])
+@client_jwt_token_verify
+def get_movies():
+    """
+    A GET API to get list of all movies in database
+    Request API : /api/v1/get/movies
+
+    Response:
+    :RETURN 200, {
+                    "data": {
+                        "Cabiria": {
+                            "director": "Giovanni Pastrone",
+                            "genre_list": [
+                                "Adventure",
+                                "Drama",
+                                "War"
+                            ],
+                            "imdb_score": 6.6,
+                            "movieName": "Cabiria",
+                            "movieid": "e856a522-8354-400a-bd65-01e9808db743",
+                            "popularity": 66.0
+                            },
+                    "status" : "sucess"
+                }
+
+    :RETURN 400, Bad Request
+    :RETURN 500, Internal Server Error
+
+    """
+    if request.method == "GET":
+
+        try:
+            page = int(request.args.get("page", 0))
+
+            queryResp = MoviesDAO.getMovieList(page, LIMIT)
+            response = MoviesSerializer(queryResp).getReponse()
+            resp = {"status": "sucess", "data": response}
+            return make_response(jsonify(resp), StatusCodes.ResponsesCode_200)
+
+        except Exception as e:
+            logger.warning(str(e))
+            response = Exceptions.getReponseMessage("InternalServerError", (str(e)))
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_500)
+
+
 @blueprint.route("/api/v1/get/search/movies", methods=["GET"])
+@client_jwt_token_verify
 def search_movies():
     """
     A GET API to search for movies based on different parameters

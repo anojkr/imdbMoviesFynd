@@ -55,6 +55,39 @@ class MoviesDAO(object):
             return movieResponse, True
 
     @staticmethod
+    def updateMovies(movieid, popularity, director, imdbScore, movieName, genreList):
+        """
+        This function add record on Movie datamodel
+        ARGS:
+            popularity(float) : popularity of movie range(1-100)
+            director(string) : director of movie
+            imdbScore(float) : imdb score of movie
+            movieName(string) : movie name
+            genreList(List of strings) : generes to which movie belong
+
+        RETURN:
+            Movie datamodel object
+        """
+
+        try:
+
+            movieObject = Movies.objects.get(uid=movieid)
+            movieObject.popularity = popularity
+            movieObject.director = director
+            movieObject.imdbScore = imdbScore
+            movieObject.movieName = movieName
+            movieObject.genreList = genreList
+            movieObject.save()
+
+            return movieObject, True
+        
+        except Exception as e:
+            print(e)
+            return None, False
+
+
+
+    @staticmethod
     def getMovieList(offset, limit):
         """
         This function Movie datamodel object containing all movies

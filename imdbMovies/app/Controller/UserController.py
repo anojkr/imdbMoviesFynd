@@ -30,6 +30,11 @@ dictConfig(Config.LOGGER_CONFIGURATION)
 logger = logging.getLogger(__name__)
 
 
+usertypeValue = {
+    "ADMIN" : True,
+    "CLIENT" : False
+}
+
 @auth_blueprint.route("/user/login")
 def homepageView():
     """
@@ -49,8 +54,10 @@ def signup_user():
     {
         "username" : "testing",
         "password" : "testing",
+        "usertype" : "ADMIN"
     }
-
+    
+    #usertype can be ADMIN or CLIENT
     Response :
     :RETURN : {
                 "status": "sucess",
@@ -63,24 +70,33 @@ def signup_user():
     """
     data = request.json
     try:
-        if "username" not in data.keys() or "password" not in data.keys():
+        if "username" not in data.keys() or "password" not in data.keys() or "usertype" not in data.keys():
             raise Exceptions.ParameterError
 
         username = data["username"]
         password = data["password"]
+        usertype = data["usertype"]
 
-        if username == "" or password == "":
+        if username == "" or password == "" or usertype == "":
             response = {
                 "status": "fail",
-                "message": "username or password cannot be empty",
+                "message": "username or password or usertype cannot be empty",
             }
+            return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
+
+        if usertype not in usertypeValue.keys():
+            response = {
+                "status" : "fail",
+                "message" : "usertype not valid"
+            }
+
             return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
 
         user = User.objects.filter(username=username).first()
 
         if user is None:
             user = User(
-                username=username, password=generate_password_hash(password)
+                username=username, password=generate_password_hash(password), usertype = usertype
             ).save()
             response = {
                 "status": "sucess",
@@ -97,7 +113,7 @@ def signup_user():
 
     except Exceptions.ParameterError:
         response = Exceptions.getReponseMessage(
-            "ParameterError", "username or password missing"
+            "ParameterError", "username or password or usertype missing"
         )
         logger.error("username or password missing in request")
         return make_response(jsonify(response), StatusCodes.ResponsesCode_400)
@@ -147,6 +163,7 @@ def login():
             token = jwt.encode(
                 {
                     "username": user.username,
+                    "usertype": user.usertype,
                     "exp": datetime.utcnow() + timedelta(minutes=30),
                 },
                 SECRET_KEY,

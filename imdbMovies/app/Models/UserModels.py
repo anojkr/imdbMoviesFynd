@@ -13,6 +13,7 @@ class User(Document):
     uid = UUIDField(binary=False, default=uuid.uuid4(), required=True)
     username = StringField(unique=True)
     password = StringField(unique=True)
+    usertype = StringField()
     createdAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
     updatedAt = DateTimeField(required=True, default=datetime.datetime.utcnow())
 
