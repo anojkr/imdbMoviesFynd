@@ -17,6 +17,14 @@ User can be only of two types ADMIN and CLIENT
 4. https://imdb-movies-apps.herokuapp.com/api/v1/get/movies
 5. https://imdb-movies-apps.herokuapp.com/api/v1/get/search/movies?name=Batman
 ```
+ ```
+Request body = {
+"username" : "admin",
+"password" : "admin",
+"usertype" : "ADMIN"
+}
+```
+OR
 
  ```
 Request body = {
